@@ -2,6 +2,7 @@ package com.zipcoder.payment;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class PaymentPresenter {
 
@@ -30,7 +31,16 @@ public class PaymentPresenter {
     }
 
     public Payment[] sortPayments() {
-        Arrays.sort(payments, new PaymentSortByPayer());
+        Arrays.sort(payments, (paymentOne, paymentTwo) -> {
+            int comparison;
+        if (paymentOne.getPayerName().compareTo(paymentTwo.getPayerName()) == 0) {
+            comparison = 0;
+        } else if (paymentOne.getPayerName().compareTo(paymentTwo.getPayerName()) < 0) {
+            comparison = -1;
+        } else {
+            comparison = 1;
+        }
+        return comparison;});
         return payments;
     }
 
@@ -45,11 +55,16 @@ public class PaymentPresenter {
 
 
     public String toStringById() {
-        Arrays.sort(payments, (paymentOne, paymentTwo) -> (int) (paymentOne.getId() - paymentTwo.getId()));
+        Arrays.sort(payments, (paymentOne, paymentTwo) -> (int)(paymentOne.getId() - paymentTwo.getId()));
         String describe = "";
         for (Payment payment : payments) {
             describe += payment.getShortDescription();
         }
         return describe;
     }
+
+//    public int compare(Payment paymentOne, Payment paymentTwo) {
+//        int comparison = (int) (paymentOne.getId() - paymentTwo.getId());
+//        return comparison;
+//    }
 }
